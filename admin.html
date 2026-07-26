@@ -87,7 +87,7 @@
             fetchWaitlist();
         }
 
-        // Handle Login Submission
+        // Handle Login Submission (Temporarily set to signUp to create your account if needed, then change back to signInWithPassword)
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             errorMessage.textContent = '';
@@ -95,7 +95,8 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            // Change this back to signInWithPassword once your user is created
+            const { data, error } = await supabaseClient.auth.signUp({ email, password });
 
             if (error) {
                 errorMessage.textContent = error.message;

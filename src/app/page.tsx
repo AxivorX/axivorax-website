@@ -58,7 +58,8 @@ export default function LandingPage() {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link href="/dashboard" className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-6 py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
+                 <Link href="/auth/signup" className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-6 py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
+  
             <span>Explore Live Dashboard</span>
             <ArrowRight className="w-4 h-4" />
           </Link>

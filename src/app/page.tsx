@@ -8,23 +8,27 @@ import {
   BrainCircuit, 
   ShieldCheck, 
   BarChart3, 
-  ArrowRight, 
-  CheckCircle2, 
-  Lock, 
-  TrendingUp 
+  ArrowRight 
 } from 'lucide-react';
 
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 selection:bg-indigo-600 selection:text-white">
-      
+
       {/* Top Navbar */}
-      <nav className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between border-b border-slate-900">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-indigo-600/20 border border-indigo-500/30 text-indigo-400 flex items-center justify-center">
-            <Activity className="w-5 h-5" />
+      <nav className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between border-b border-slate-900 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
+        <div className="flex items-center gap-3 group cursor-pointer">
+          <img 
+            src="data:image/svg+xml;base64,IVBORw0KGgoAAAANSUhEUgAABOYAAATmCAIAAAAKnjl9AABxn2NhQlgAAHGfanVtYgAAAB5qdW1kYzJwYQARABCAAACqADibcQNjMnBhAAAAcXlqdW1iAAAAR2p1bWRjMm1hABEAEIAAAKoAOJtxA3VybjpjMnBhOjZiODIwNGM4LWJjY2UtNGRlMC1hNDkyLWQyODA1ZmIyNDhiMwAAACFVanVtYgAAAClqdW1kYzJhcwARABCAAACqADibcQNjMnBhLmFzc2VydGlvbnMAAAAJ0Wp1bWIAAAA7anVtZEDLDDK7ikidpwsq1vR/Q2kTYzJwYS5pY29uAAAAABhjMnNo5Xk02dfhiIbr4F0C+YZX+wAAABdiZmRiAGltYWdlL3N2Zyt4bWwAAAAJd2JpZGI8c3ZnIHdpZHRoPSI3MTYiIGhlaWdodD0iNzE2IiB2aWV3Qm94PSIwIDAgNzE2IDcxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTUwOC43NDkgMzE3LjM5OUM1MTYuNzc3IDI4Ny4zMTQgNTA4Ljk5MSAyNTMuODg0IDQ4NS4zODkgMjMwLjI4MkM0NjEuNzg4IDIwNi42ODEgNDI4LjM2IDE5OC44OTUgMzk4LjI3MyAyMDYK..." 
+            alt="AxivoraX Logo" 
+            className="w-11 h-11 object-contain rounded-xl border border-indigo-500/30 bg-indigo-600/10" 
+          />
+          <div className="flex flex-col">
+            <span className="font-extrabold text-lg tracking-tight text-slate-100 flex items-center gap-1.5">
+              Axivora<span className="text-indigo-400">X</span>
+            </span>
+            <span className="text-[10px] uppercase tracking-widest text-slate-400 font-medium">Neural Trading</span>
           </div>
-          <span className="font-bold text-lg tracking-tight text-slate-100">AxivoraX</span>
         </div>
 
         <div className="flex items-center gap-4">
@@ -58,13 +62,12 @@ export default function LandingPage() {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                 <Link href="/auth/signup" className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-6 py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
-  
-            <span>Explore Live Dashboard</span>
+          <Link href="/auth/signup" className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-6 py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
+            <span>Get Started Now</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
-          <Link href="/auth/signup" className="w-full sm:w-auto bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-300 font-medium px-6 py-3 rounded-xl transition-colors">
-            Initialize Free Workspace
+          <Link href="/auth/login" className="w-full sm:w-auto bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-300 font-medium px-6 py-3 rounded-xl transition-colors">
+            Sign In to Workspace
           </Link>
         </div>
       </section>
@@ -77,7 +80,7 @@ export default function LandingPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          
+
           <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6">
             <div className="w-10 h-10 rounded-xl bg-indigo-600/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center mb-4">
               <BarChart3 className="w-5 h-5" />

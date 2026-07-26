@@ -3,90 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Axivorax - Admin Dashboard</title>
-    <!-- Include Supabase JS Client -->
+    <title>Admin Dashboard</title>
+    <!-- Supabase CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body { font-family: sans-serif; background: #0f172a; color: #f8fafc; padding: 2rem; margin: 0; }
-        .container { max-width: 900px; margin: 0 auto; }
-        .card { background: #1e293b; padding: 1.5rem; border-radius: 8px; margin-top: 1rem; }
-        input, button { padding: 0.75rem; border-radius: 4px; border: 1px solid #475569; background: #0f172a; color: #fff; font-size: 1rem; }
-        button { background: #3b82f6; border: none; cursor: pointer; font-weight: bold; }
-        button:hover { background: #2563eb; }
-        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-        th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid #334155; }
-        th { color: #94a3b8; }
-        .hidden { display: none; }
+        body { font-family: Arial, sans-serif; background: #f4f4f9; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .hidden { display: none !important; }
+        input, button { padding: 10px; margin: 5px 0; width: 100%; box-sizing: border-box; }
+        button { background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0051cc; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #f8f9fa; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Axivorax Admin</h1>
-
-        <!-- Login Section (Shown if not logged in) -->
-        <div id="login-section" class="card">
-            <h3>Admin Login</h3>
+        <!-- Login Form -->
+        <div id="login-section">
+            <h2>Admin Login</h2>
             <form id="login-form">
-                <input type="email" id="admin-email" placeholder="Your Email" required><br><br>
-                <input type="password" id="admin-password" placeholder="Password" required><br><br>
+                <input type="email" id="email" placeholder="Email Address" required>
+                <input type="password" id="password" placeholder="Password" required>
                 <button type="submit">Login</button>
             </form>
-            <p id="login-error" style="color: #ef4444;"></p>
+            <p id="error-message" style="color: red;"></p>
         </div>
 
-        <!-- Dashboard Section (Hidden until logged in) -->
-        <div id="dashboard-section" class="card hidden">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h3>Waitlist Sign-ups</h3>
-                <button id="logout-btn" style="background: #ef4444;">Logout</button>
-            </div>
+        <!-- Dashboard Section -->
+        <div id="dashboard-section" class="hidden">
+            <h2>Waitlist Dashboard</h2>
+            <button id="logout-btn" style="background: #e00; width: auto; padding: 5px 15px; float: right;">Logout</button>
+            <div style="clear: both;"></div>
+            
             <table>
                 <thead>
                     <tr>
                         <th>Email</th>
-                        <th>Asset Type</th>
-                        <th>Signed Up</th>
+                        <th>Joined At</th>
                     </tr>
                 </thead>
                 <tbody id="waitlist-table-body">
-                    <!-- Data injected via JS -->
+                    <!-- Data will load here -->
                 </tbody>
             </table>
         </div>
     </div>
 
     <script>
-        // Replace with your actual Supabase details
+        // REPLACE THESE WITH YOUR ACTUAL SUPABASE URL AND ANON KEY
         const SUPABASE_URL = 'YOUR_SUPABASE_URL';
         const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         
+        // Initialize Supabase correctly using window.supabase
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
         const loginSection = document.getElementById('login-section');
         const dashboardSection = document.getElementById('dashboard-section');
         const loginForm = document.getElementById('login-form');
-        const loginError = document.getElementById('login-error');
+        const errorMessage = document.getElementById('error-message');
         const logoutBtn = document.getElementById('logout-btn');
         const tableBody = document.getElementById('waitlist-table-body');
 
-        // Check if already logged in on page load
+        // Check active session on load
         async function checkUser() {
-            const { data: { session } } = await supabase.auth.getSession();
+            const { data: { session }, error } = await supabase.auth.getSession();
             if (session) {
                 showDashboard();
+            } else {
+                showLogin();
             }
         }
-        checkUser();
 
-        // Handle Login
+        function showLogin() {
+            loginSection.classList.remove('hidden');
+            dashboardSection.classList.add('hidden');
+        }
+
+        function showDashboard() {
+            loginSection.classList.add('hidden');
+            dashboardSection.classList.remove('hidden');
+            fetchWaitlist();
+        }
+
+        // Handle Login Submission (Securely using signInWithPassword)
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('admin-email').value;
-            const password = document.getElementById('admin-password').value;
+            errorMessage.textContent = '';
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
 
-            const { data, error } = await supabase.auth.signUp({ email, password });
+            // Secure login method
+            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
             if (error) {
-                loginError.textContent = error.message;
+                errorMessage.textContent = error.message;
             } else {
                 showDashboard();
             }
@@ -95,37 +109,32 @@
         // Handle Logout
         logoutBtn.addEventListener('click', async () => {
             await supabase.auth.signOut();
-            dashboardSection.classList.add('hidden');
-            loginSection.classList.remove('hidden');
+            showLogin();
         });
 
-        // Fetch and display waitlist data
-        async function showDashboard() {
-            loginSection.classList.add('hidden');
-            dashboardSection.classList.remove('hidden');
-
-            // Fetch from your waitlist table (adjust table name if needed, e.g., 'waitlist')
-            const { data, error } = await supabase
-                .from('waitlist') 
-                .select('*')
-                .order('created_at', { ascending: false });
+        // Fetch Data for Dashboard
+        async function fetchWaitlist() {
+            tableBody.innerHTML = '';
+            const { data, error } = await supabase.from('waitlist').select('*');
 
             if (error) {
-                alert('Error loading waitlist data: ' + error.message);
+                console.error('Error fetching waitlist:', error.message);
                 return;
             }
 
-            tableBody.innerHTML = '';
-            data.forEach(row => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${row.email}</td>
-                    <td>${row.asset_type || 'N/A'}</td>
-                    <td>${new Date(row.created_at).toLocaleDateString()}</td>
-                `;
-                tableBody.appendChild(tr);
-            });
+            if (data && data.length > 0) {
+                data.forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `<td>${row.email || 'N/A'}</td><td>${new Date(row.created_at).toLocaleString() || 'N/A'}</td>`;
+                    tableBody.appendChild(tr);
+                });
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="2" style="text-align: center;">No entries found</td></tr>';
+            }
         }
+
+        // Run check on page load
+        checkUser();
     </script>
 </body>
 </html>

@@ -53,14 +53,11 @@
     </div>
 
     <script>
-        // REPLACE THESE WITH YOUR ACTUAL SUPABASE URL AND ANON KEY
         const SUPABASE_URL = 'https://pnknjoeaacyttttgpabv.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBua25qb2VhYWN5dHR0dGdwYWJ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwNTA1OTQsImV4cCI6MjEwMDYyNjU5NH0.1o4idKmzH-FV0rY9udl3WKDu8B94ILkjtLiX-p7zk7A';
-
-        var supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         
-        // Initialize Supabase correctly using window.supabase
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // Using a completely unique variable name 'supabaseClient' to avoid any conflicts
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         const loginSection = document.getElementById('login-section');
         const dashboardSection = document.getElementById('dashboard-section');
@@ -71,7 +68,7 @@
 
         // Check active session on load
         async function checkUser() {
-            const { data: { session }, error } = await supabase.auth.getSession();
+            const { data: { session }, error } = await supabaseClient.auth.getSession();
             if (session) {
                 showDashboard();
             } else {
@@ -90,7 +87,7 @@
             fetchWaitlist();
         }
 
-        // Handle Login Submission (Securely using signInWithPassword)
+        // Handle Login Submission
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             errorMessage.textContent = '';
@@ -98,8 +95,7 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            // Secure login method
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+            const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
             if (error) {
                 errorMessage.textContent = error.message;
@@ -110,14 +106,14 @@
 
         // Handle Logout
         logoutBtn.addEventListener('click', async () => {
-            await supabase.auth.signOut();
+            await supabaseClient.auth.signOut();
             showLogin();
         });
 
         // Fetch Data for Dashboard
         async function fetchWaitlist() {
             tableBody.innerHTML = '';
-            const { data, error } = await supabase.from('waitlist').select('*');
+            const { data, error } = await supabaseClient.from('waitlist').select('*');
 
             if (error) {
                 console.error('Error fetching waitlist:', error.message);

@@ -109,3 +109,46 @@ header {
 }
 
 }
+
+.waitlist {
+  text-align: center;
+  padding: 90px 8%;
+}
+
+.waitlist h2 {
+  font-size: 42px;
+  margin-bottom: 20px;
+}
+
+.waitlist p {
+  color: #b5bdd0;
+  max-width: 600px;
+  margin: 0 auto 35px;
+  font-size: 18px;
+}
+
+.waitlist-form {
+  max-width: 450px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.waitlist-form input,
+.waitlist-form select {
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid #2b3555;
+  background: #11182d;
+  color: white;
+  font-size: 16px;
+}
+
+.waitlist-form input::placeholder {
+  color: #9aa4bf;
+}
+
+.waitlist-form select {
+  cursor: pointer;
+}

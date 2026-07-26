@@ -64,31 +64,87 @@
     AxivoraX — Trading Performance Intelligence Platform.
   </p>
 
-  <form class="waitlist-form">
+  <!-- ADDED IDs TO FORM ELEMENTS -->
+  <form id="waitlist-form" class="waitlist-form">
 
-    <input type="text" placeholder="Your Name">
+    <input type="text" id="name-input" placeholder="Your Name" required>
 
-    <input type="email" placeholder="Email Address">
+    <input type="email" id="email-input" placeholder="Email Address" required>
 
-    <select>
-      <option>What do you trade?</option>
-      <option>Stocks</option>
-      <option>Crypto</option>
-      <option>Forex</option>
-      <option>Options</option>
+    <select id="trade-select">
+      <option value="">What do you trade?</option>
+      <option value="Stocks">Stocks</option>
+      <option value="Crypto">Crypto</option>
+      <option value="Forex">Forex</option>
+      <option value="Options">Options</option>
     </select>
 
-    <button class="btn">
+    <button type="submit" id="submit-btn" class="btn">
       Request Early Access
     </button>
 
   </form>
+
+  <!-- SUCCESS MESSAGE (Hidden by default) -->
+  <div id="success-message" style="display: none; text-align: center; margin-top: 20px;">
+    <h3>You're on the list! 🎉</h3>
+    <p>We'll notify you as soon as early access opens.</p>
+  </div>
 
 </section>
 
 <footer>
   <p>© 2026 AxivoraX. All rights reserved.</p>
 </footer>
+
+<!-- SUPABASE INTEGRATION SCRIPT -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // Replace these with your actual Supabase URL and Anon Key from your Supabase Dashboard -> Settings -> API
+  const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL';
+  const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+  const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const form = document.getElementById('waitlist-form');
+  const successMessage = document.getElementById('success-message');
+  const submitBtn = document.getElementById('submit-btn');
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault(); // Prevents page from reloading/leaving
+
+    const name = document.getElementById('name-input').value;
+    const email = document.getElementById('email-input').value;
+    const asset = document.getElementById('trade-select').value;
+
+    submitBtn.textContent = 'Joining...';
+    submitBtn.disabled = true;
+
+    try {
+      // Sends data straight to your Supabase table
+      const { error } = await _supabase
+        .from('waitlist')
+        .insert([{ name: name, email: email, asset_type: asset }]);
+
+      if (error) {
+        if (error.code === '23505') {
+          alert("This email is already on the waitlist!");
+        } else {
+          alert("Something went wrong. Please try again.");
+        }
+        submitBtn.textContent = 'Request Early Access';
+        submitBtn.disabled = false;
+      } else {
+        // Hides form smoothly and shows success text
+        form.style.display = 'none';
+        successMessage.style.display = 'block';
+      }
+    } catch (err) {
+      alert("Network error. Please try again.");
+      submitBtn.textContent = 'Request Early Access';
+      submitBtn.disabled = false;
+    }
+  });
+</script>
 
 </body>
 </html>

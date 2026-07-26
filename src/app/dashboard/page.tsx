@@ -1,323 +1,303 @@
 // src/app/dashboard/page.tsx
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { 
-  TrendingUp, 
-  TrendingDown, 
-  DollarSign, 
-  Percent, 
   Activity, 
-  ShieldAlert, 
-  Plus, 
-  Calendar, 
-  ChevronDown, 
-  Smile, 
-  Frown, 
-  Meh, 
-  Calculator, 
-  ArrowRight 
+  BarChart3, 
+  BrainCircuit, 
+  ShieldCheck, 
+  LogOut, 
+  TrendingUp, 
+  DollarSign, 
+  ArrowUpRight, 
+  PieChart, 
+  Zap,
+  Settings,
+  Bell,
+  Radio,
+  Cpu,
+  RefreshCw
 } from 'lucide-react';
 
 export default function DashboardPage() {
-  const [dateRange, setDateRange] = useState('This Month');
-  const [selectedAccount, setSelectedAccount] = useState('All Accounts');
-  const [mood, setMood] = useState<'calm' | 'fomo' | 'revenge' | null>('calm');
+  // Live simulation ticker for next-gen feel
+  const [livePnL, setLivePnL] = useState(12450.00);
+  const [isSyncing, setIsSyncing] = useState(false);
 
-  // Quick Risk Calculator State
-  const [accountSize, setAccountSize] = useState('10000');
-  const [riskPercent, setRiskPercent] = useState('1');
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const fluctuation = (Math.random() * 20 - 9.5);
+      setLivePnL(prev => Number((prev + fluctuation).toFixed(2)));
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
-  const calculatedRiskAmount = (Number(accountSize) * (Number(riskPercent) / 100)).toFixed(2);
+  const handleSync = () => {
+    setIsSyncing(true);
+    setTimeout(() => setIsSyncing(false), 800);
+  };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 p-6">
-      {/* Top Navigation / Header Controls */}
-      <header className="flex flex-col md:flex-row justify-between items-start md:items-center pb-6 mb-8 border-b border-slate-800 gap-4">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Trading Dashboard</h1>
-          <p className="text-sm text-slate-400">Welcome back. Here is your portfolio performance summary.</p>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-3">
-          {/* Account Selector Dropdown */}
-          <div className="relative">
-            <select 
-              value={selectedAccount}
-              onChange={(e) => setSelectedAccount(e.target.value)}
-              className="bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 appearance-none pr-8 cursor-pointer"
-            >
-              <option>All Accounts</option>
-              <option>Binance Futures</option>
-              <option>Interactive Brokers</option>
-              <option>Manual Paper Journal</option>
-            </select>
-            <ChevronDown className="w-4 h-4 text-slate-400 absolute right-2.5 top-3 pointer-events-none" />
-          </div>
-
-          {/* Date Range Selector */}
-          <div className="relative">
-            <select 
-              value={dateRange}
-              onChange={(e) => setDateRange(e.target.value)}
-              className="bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 appearance-none pr-8 cursor-pointer"
-            >
-              <option>Today</option>
-              <option>This Week</option>
-              <option>This Month</option>
-              <option>Year-to-Date (YTD)</option>
-              <option>All-Time</option>
-            </select>
-            <Calendar className="w-4 h-4 text-slate-400 absolute right-2.5 top-3 pointer-events-none" />
-          </div>
-
-          {/* Quick Add Trade Trigger */}
-          <button className="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors">
-            <Plus className="w-4 h-4" />
-            Add Trade
-          </button>
-        </div>
-      </header>
-
-      {/* Row 1: KPI Summary Cards */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        {/* Total Net P&L */}
-        <div className="bg-slate-900 border border-slate-800/80 rounded-xl p-5 shadow-sm">
-          <div className="flex justify-between items-center text-slate-400 mb-2">
-            <span className="text-xs font-semibold uppercase tracking-wider">Total Net P&L</span>
-            <DollarSign className="w-4 h-4 text-indigo-400" />
-          </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold text-emerald-400">+$4,285.50</span>
-            <span className="text-xs font-medium text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">+14.2%</span>
-          </div>
-          <p className="text-xs text-slate-500 mt-2">vs. previous period ($3,750.00)</p>
-        </div>
-
-        {/* Win Rate */}
-        <div className="bg-slate-900 border border-slate-800/80 rounded-xl p-5 shadow-sm">
-          <div className="flex justify-between items-center text-slate-400 mb-2">
-            <span className="text-xs font-semibold uppercase tracking-wider">Win Rate</span>
-            <Percent className="w-4 h-4 text-indigo-400" />
-          </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold text-slate-100">68.4%</span>
-            <span className="text-xs font-medium text-slate-400">38W / 18L</span>
-          </div>
-          <div className="w-full bg-slate-800 h-1.5 rounded-full mt-3 overflow-hidden">
-            <div className="bg-indigo-500 h-full rounded-full" style={{ width: '68.4%' }}></div>
-          </div>
-        </div>
-
-        {/* Profit Factor */}
-        <div className="bg-slate-900 border border-slate-800/80 rounded-xl p-5 shadow-sm">
-          <div className="flex justify-between items-center text-slate-400 mb-2">
-            <span className="text-xs font-semibold uppercase tracking-wider">Profit Factor</span>
-            <Activity className="w-4 h-4 text-indigo-400" />
-          </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold text-slate-100">2.14</span>
-            <span className="text-xs font-medium text-emerald-400">Target > 1.5</span>
-          </div>
-          <p className="text-xs text-slate-500 mt-2">Gross Profit ($8,400) / Gross Loss ($3,920)</p>
-        </div>
-
-        {/* Avg Risk-to-Reward */}
-        <div className="bg-slate-900 border border-slate-800/80 rounded-xl p-5 shadow-sm">
-          <div className="flex justify-between items-center text-slate-400 mb-2">
-            <span className="text-xs font-semibold uppercase tracking-wider">Avg Risk:Reward</span>
-            <TrendingUp className="w-4 h-4 text-indigo-400" />
-          </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold text-slate-100">1 : 2.3</span>
-          </div>
-          <p className="text-xs text-slate-500 mt-2">Realized outcome consistency score: High</p>
-        </div>
-      </section>
-
-      {/* Row 2: Main Equity Curve Chart */}
-      <section className="bg-slate-900 border border-slate-800/80 rounded-xl p-6 mb-8 shadow-sm">
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <h2 className="text-lg font-semibold">Equity Curve & Portfolio Growth</h2>
-            <p className="text-xs text-slate-400">Cumulative net profit tracking over selected timeline</p>
-          </div>
-          <div className="flex gap-2">
-            <button className="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg transition-colors">P&L ($)</button>
-            <button className="text-xs text-slate-400 hover:bg-slate-800 px-3 py-1.5 rounded-lg transition-colors">Return (%)</button>
-          </div>
-        </div>
-        
-        {/* Mock Chart Area */}
-        <div className="h-64 w-full flex items-end gap-2 pt-6 px-2 border-b border-slate-800">
-          {[40, 45, 38, 60, 55, 75, 70, 85, 80, 95, 90, 110, 105, 130, 125, 150].map((val, idx) => (
-            <div key={idx} className="flex-1 bg-indigo-600/20 hover:bg-indigo-600/40 rounded-t transition-all relative group" style={{ height: `${val}%` }}>
-              <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-slate-800 text-slate-200 text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-10">
-                Day {idx + 1}: +${val * 35}
+    <div className="min-h-screen bg-slate-50 dark:bg-[#05070a] text-slate-900 dark:text-slate-100 flex selection:bg-indigo-600 selection:text-white font-sans transition-colors duration-300">
+      
+      {/* Next-Gen Floating Sidebar */}
+      <aside className="w-72 border-r border-slate-200 dark:border-slate-800/60 bg-white/70 dark:bg-[#080c14]/80 backdrop-blur-2xl p-6 flex flex-col justify-between hidden lg:flex sticky top-0 h-screen shadow-sm dark:shadow-none">
+        <div className="space-y-8">
+          
+          {/* Brand Logo & Live Signal Badge */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-violet-500 text-white flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                <Activity className="w-5 h-5" />
+              </div>
+              <div>
+                <span className="font-extrabold text-base tracking-tight text-slate-900 dark:text-slate-100 block">
+                  Axivora<span className="text-indigo-600 dark:text-indigo-400">X</span>
+                </span>
+                <span className="text-[10px] uppercase tracking-widest text-indigo-600 dark:text-indigo-400 font-bold">Neural Core v3.0</span>
               </div>
             </div>
-          ))}
-        </div>
-        <div className="flex justify-between text-xs text-slate-500 mt-3">
-          <span>Day 1</span>
-          <span>Day 8</span>
-          <span>Day 16</span>
-        </div>
-      </section>
+          </div>
 
-      {/* Row 3: Interactive Dashboard Widgets (Daily Mood & Risk Calculator) */}
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        
-        {/* Daily Psychological Check-in Widget */}
-        <div className="bg-slate-900 border border-slate-800/80 rounded-xl p-6 shadow-sm flex flex-col justify-between">
-          <div>
-            <h2 className="text-base font-semibold mb-1">Pre-Market Emotional State</h2>
-            <p className="text-xs text-slate-400 mb-4">Log your mindset before entering today's session to track psychological patterns.</p>
+          {/* Navigation Links */}
+          <nav className="space-y-1.5">
+            <Link href="/dashboard" className="flex items-center justify-between px-4 py-3 rounded-2xl bg-indigo-50 dark:bg-indigo-600/10 border border-indigo-200 dark:border-indigo-500/30 text-indigo-700 dark:text-indigo-300 font-semibold text-xs tracking-wide transition-all shadow-sm">
+              <div className="flex items-center gap-3">
+                <BarChart3 className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                <span>Live Telemetry</span>
+              </div>
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            </Link>
             
-            <div className="grid grid-cols-3 gap-3">
-              <button 
-                onClick={() => setMood('calm')}
-                className={`p-3 rounded-lg border text-xs font-medium flex flex-col items-center gap-2 transition-colors ${mood === 'calm' ? 'bg-indigo-600/20 border-indigo-500 text-indigo-300' : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700'}`}
-              >
-                <Smile className="w-5 h-5 text-emerald-400" />
-                <span>Calm & Focused</span>
-              </button>
+            <Link href="/dashboard" className="flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900/50 font-medium text-xs tracking-wide transition-all">
+              <BrainCircuit className="w-4 h-4" />
+              <span>Behavioral Engine</span>
+            </Link>
+            
+            <Link href="/dashboard" className="flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900/50 font-medium text-xs tracking-wide transition-all">
+              <ShieldCheck className="w-4 h-4" />
+              <span>Risk Matrix Lab</span>
+            </Link>
 
-              <button 
-                onClick={() => setMood('fomo')}
-                className={`p-3 rounded-lg border text-xs font-medium flex flex-col items-center gap-2 transition-colors ${mood === 'fomo' ? 'bg-indigo-600/20 border-indigo-500 text-indigo-300' : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700'}`}
-              >
-                <Meh className="w-5 h-5 text-amber-400" />
-                <span>Anxious / FOMO</span>
-              </button>
+            <Link href="/dashboard" className="flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900/50 font-medium text-xs tracking-wide transition-all">
+              <PieChart className="w-4 h-4" />
+              <span>Strategy Attribution</span>
+            </Link>
+          </nav>
+        </div>
 
-              <button 
-                onClick={() => setMood('revenge')}
-                className={`p-3 rounded-lg border text-xs font-medium flex flex-col items-center gap-2 transition-colors ${mood === 'revenge' ? 'bg-indigo-600/20 border-indigo-500 text-indigo-300' : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700'}`}
-              >
-                <Frown className="w-5 h-5 text-rose-400" />
-                <span>Revenge Trading</span>
-              </button>
+        {/* User Footer / Active Connection Status */}
+        <div className="border-t border-slate-200 dark:border-slate-800/60 pt-4 space-y-3">
+          <div className="flex items-center justify-between px-3.5 py-2.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800">
+            <div className="flex items-center gap-3">
+              <div className="w-7 h-7 rounded-xl bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-bold flex items-center justify-center text-[10px] border border-indigo-200 dark:border-indigo-800">
+                TR
+              </div>
+              <div>
+                <p className="text-[11px] font-bold text-slate-900 dark:text-slate-200">System Trader</p>
+                <p className="text-[9px] text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
+                  <Radio className="w-2.5 h-2.5 animate-pulse" /> WebSocket Online
+                </p>
+              </div>
             </div>
           </div>
 
-          <div className="mt-4 pt-4 border-t border-slate-800/80 flex justify-between items-center text-xs text-slate-400">
-            <span>Status: Logged for today</span>
-            <span className="text-indigo-400 font-medium">Syncs with AI Insights →</span>
-          </div>
+          <Link href="/" className="flex items-center justify-center gap-2 w-full py-2.5 text-slate-500 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 text-xs font-semibold transition-colors">
+            <LogOut className="w-3.5 h-3.5" />
+            <span>Disconnect Session</span>
+          </Link>
         </div>
+      </aside>
 
-        {/* Quick Position Risk Calculator Widget */}
-        <div className="bg-slate-900 border border-slate-800/80 rounded-xl p-6 shadow-sm flex flex-col justify-between">
+      {/* Main Content Workspace */}
+      <main className="flex-1 p-6 md:p-10 overflow-y-auto">
+        
+        {/* Dynamic Header */}
+        <header className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-200 dark:border-slate-800/80 mb-8 gap-4">
           <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="px-2 py-0.5 rounded-md bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-[10px] font-bold tracking-widest uppercase border border-indigo-200 dark:border-indigo-500/20">
+                Live Feed Active
+              </span>
+              <span className="text-slate-400 text-xs">•</span>
+              <span className="text-slate-500 dark:text-slate-400 text-xs font-mono">ID: AXV-9082-TR</span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-slate-100">Command Workspace</h1>
+          </div>
+          
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={handleSync}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 text-xs font-bold shadow-sm hover:border-indigo-500 transition-all ${isSyncing ? 'opacity-75' : ''}`}
+            >
+              <RefreshCw className={`w-3.5 h-3.5 text-indigo-500 ${isSyncing ? 'animate-spin' : ''}`} />
+              <span>Sync Telemetry</span>
+            </button>
+            <button className="w-10 h-10 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition-colors shadow-sm relative">
+              <Bell className="w-4 h-4" />
+              <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-indigo-600 animate-ping"></span>
+              <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-indigo-600"></span>
+            </button>
+            <button className="w-10 h-10 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition-colors shadow-sm">
+              <Settings className="w-4 h-4" />
+            </button>
+          </div>
+        </header>
+
+        {/* Real-Time Metrics Bento Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+          
+          {/* Live P&L Card with Stream Effect */}
+          <div className="bg-white dark:bg-gradient-to-br dark:from-[#0f1523] dark:to-[#080c14] border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 shadow-sm dark:shadow-xl relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-3xl"></div>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-base font-semibold flex items-center gap-2">
-                <Calculator className="w-4 h-4 text-indigo-400" /> Quick Risk Calculator
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3 mb-4">
-              <div>
-                <label className="block text-[11px] font-medium text-slate-400 mb-1">Account Size ($)</label>
-                <input 
-                  type="number" 
-                  value={accountSize}
-                  onChange={(e) => setAccountSize(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-sm text-slate-200 focus:outline-none focus:border-indigo-500"
-                />
-              </div>
-              <div>
-                <label className="block text-[11px] font-medium text-slate-400 mb-1">Risk Tolerance (%)</label>
-                <input 
-                  type="number" 
-                  step="0.1"
-                  value={riskPercent}
-                  onChange={(e) => setRiskPercent(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-sm text-slate-200 focus:outline-none focus:border-indigo-500"
-                />
+              <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Net P&amp;L (Real-Time)</span>
+              <div className="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                <DollarSign className="w-4 h-4" />
               </div>
             </div>
-          </div>
-
-          <div className="bg-slate-950 border border-slate-800 rounded-lg p-3 flex justify-between items-center">
-            <span className="text-xs text-slate-400">Max Allowable Loss per Trade:</span>
-            <span className="text-sm font-bold text-rose-400">-${calculatedRiskAmount}</span>
-          </div>
-        </div>
-
-      </section>
-
-      {/* Row 4: Split Pane (Recent Trades Table & AI Insights Snippet) */}
-      <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
-        {/* Recent Trades Table (Spans 2 columns) */}
-        <div className="lg:col-span-2 bg-slate-900 border border-slate-800/80 rounded-xl p-6 shadow-sm">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold">Recent Trades</h2>
-            <button className="text-xs text-indigo-400 hover:text-indigo-300 font-medium">View Full Journal →</button>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm text-slate-300">
-              <thead className="text-xs text-slate-500 uppercase bg-slate-950/50 border-b border-slate-800">
-                <tr>
-                  <th className="py-3 px-4">Asset</th>
-                  <th className="py-3 px-4">Type</th>
-                  <th className="py-3 px-4">Date</th>
-                  <th className="py-3 px-4">Size</th>
-                  <th className="py-3 px-4 text-right">Net P&L</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-800/60">
-                <tr className="hover:bg-slate-800/30 transition-colors">
-                  <td className="py-3 px-4 font-medium text-slate-100">BTC/USDT</td>
-                  <td className="py-3 px-4"><span className="text-xs bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded">LONG</span></td>
-                  <td className="py-3 px-4 text-slate-400">Today, 14:20</td>
-                  <td className="py-3 px-4 text-slate-400">0.5 BTC</td>
-                  <td className="py-3 px-4 text-right font-medium text-emerald-400">+$340.00</td>
-                </tr>
-                <tr className="hover:bg-slate-800/30 transition-colors">
-                  <td className="py-3 px-4 font-medium text-slate-100">EUR/USD</td>
-                  <td className="py-3 px-4"><span className="text-xs bg-rose-500/10 text-rose-400 px-2 py-0.5 rounded">SHORT</span></td>
-                  <td className="py-3 px-4 text-slate-400">Yesterday</td>
-                  <td className="py-3 px-4 text-slate-400">1.0 Lot</td>
-                  <td className="py-3 px-4 text-right font-medium text-rose-400">-$125.50</td>
-                </tr>
-                <tr className="hover:bg-slate-800/30 transition-colors">
-                  <td className="py-3 px-4 font-medium text-slate-100">NVDA</td>
-                  <td className="py-3 px-4"><span className="text-xs bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded">LONG</span></td>
-                  <td className="py-3 px-4 text-slate-400">Oct 24</td>
-                  <td className="py-3 px-4 text-slate-400">50 Shrs</td>
-                  <td className="py-3 px-4 text-right font-medium text-emerald-400">+$620.00</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* AI Insights Snippet (Spans 1 column) */}
-        <div className="bg-gradient-to-b from-slate-900 to-indigo-950/20 border border-indigo-900/40 rounded-xl p-6 shadow-sm flex flex-col justify-between">
-          <div>
-            <div className="flex items-center gap-2 text-indigo-400 mb-3">
-              <ShieldAlert className="w-5 h-5" />
-              <h2 className="text-lg font-semibold text-slate-100">AI Insights Feed</h2>
+            <div className="text-3xl font-black text-emerald-600 dark:text-emerald-400 mb-1 tracking-tight font-mono">
+              +${livePnL.toLocaleString('en-US', { minimumFractionDigits: 2 })}
             </div>
-            <p className="text-xs text-slate-400 mb-4">Real-time behavioral analysis and pattern checks.</p>
-            
-            <div className="bg-indigo-950/40 border border-indigo-800/50 rounded-lg p-4 mb-4">
-              <span className="text-[10px] font-semibold text-indigo-300 uppercase tracking-wider bg-indigo-900/60 px-2 py-0.5 rounded">Warning Detected</span>
-              <p className="text-xs text-slate-200 mt-2 leading-relaxed">
-                You have taken 3 consecutive trades outside your core market session hours today, resulting in a 42% decrease in win rate efficiency.
+            <div className="flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-semibold">
+              <ArrowUpRight className="w-3.5 h-3.5" />
+              <span>+14.2% yield stream</span>
+            </div>
+          </div>
+
+          {/* Win Rate Ratio */}
+          <div className="bg-white dark:bg-gradient-to-br dark:from-[#0f1523] dark:to-[#080c14] border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 shadow-sm dark:shadow-xl relative overflow-hidden group">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Win Rate Ratio</span>
+              <div className="w-8 h-8 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                <TrendingUp className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-3xl font-black text-slate-900 dark:text-slate-100 mb-1 tracking-tight font-mono">68.4%</div>
+            <div className="text-xs text-slate-500 dark:text-slate-400">
+              Sample size: <span className="text-slate-900 dark:text-slate-200 font-bold">48 executions</span>
+            </div>
+          </div>
+
+          {/* Neural Behavioral Score */}
+          <div className="bg-white dark:bg-gradient-to-br dark:from-[#0f1523] dark:to-[#080c14] border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 shadow-sm dark:shadow-xl relative overflow-hidden group">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Behavioral Core</span>
+              <div className="w-8 h-8 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                <Cpu className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-3xl font-black text-indigo-600 dark:text-indigo-400 mb-1 tracking-tight font-mono">92 <span className="text-sm font-normal text-slate-400">/ 100</span></div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-1">
+              <Zap className="w-3.5 h-3.5 text-indigo-500" />
+              <span>Zero emotional deviation</span>
+            </div>
+          </div>
+
+          {/* Profit Factor */}
+          <div className="bg-white dark:bg-gradient-to-br dark:from-[#0f1523] dark:to-[#080c14] border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 shadow-sm dark:shadow-xl relative overflow-hidden group">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Profit Factor</span>
+              <div className="w-8 h-8 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                <ShieldCheck className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-3xl font-black text-slate-900 dark:text-slate-100 mb-1 tracking-tight font-mono">2.41</div>
+            <div className="text-xs text-slate-500 dark:text-slate-400">Optimal risk-to-reward ratio</div>
+          </div>
+
+        </div>
+
+        {/* Dynamic Activity Stream & AI Telemetry Center */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          {/* Live Order Book / Executions Feed */}
+          <div className="lg:col-span-2 bg-white dark:bg-[#080c14]/80 border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 shadow-sm dark:shadow-none">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-base font-bold tracking-tight text-slate-900 dark:text-slate-100">Live Telemetry Ledger</h2>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Incoming execution stream from connected broker node.</p>
+              </div>
+              <span className="px-3 py-1 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/50 text-emerald-600 dark:text-emerald-400 text-xs font-bold flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                Streaming
+              </span>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b border-slate-100 dark:border-slate-800/80 text-slate-400 uppercase tracking-wider font-bold text-[10px]">
+                    <th className="pb-3">Asset / Symbol</th>
+                    <th className="pb-3">Direction</th>
+                    <th className="pb-3">Position Size</th>
+                    <th className="pb-3">Realized P&amp;L</th>
+                    <th className="pb-3 text-right">Execution Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800/50 text-slate-700 dark:text-slate-300 font-medium">
+                  <tr>
+                    <td className="py-4 font-extrabold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500"></span> NQ / Nasdaq 100
+                    </td>
+                    <td className="py-4 text-emerald-600 dark:text-emerald-400 font-bold">Long</td>
+                    <td className="py-4 font-mono">2 Contracts</td>
+                    <td className="py-4 font-bold text-emerald-600 dark:text-emerald-400 font-mono">+$1,420.00</td>
+                    <td className="py-4 text-right"><span className="px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/40 text-emerald-700 dark:text-emerald-400 text-[10px] font-bold">Finalized</span></td>
+                  </tr>
+                  <tr>
+                    <td className="py-4 font-extrabold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-rose-500"></span> ES / S&amp;P 500
+                    </td>
+                    <td className="py-4 text-rose-600 dark:text-rose-400 font-bold">Short</td>
+                    <td className="py-4 font-mono">4 Contracts</td>
+                    <td className="py-4 font-bold text-rose-600 dark:text-rose-400 font-mono">-$380.00</td>
+                    <td className="py-4 text-right"><span className="px-2.5 py-1 rounded-lg bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/40 text-rose-700 dark:text-rose-400 text-[10px] font-bold">Finalized</span></td>
+                  </tr>
+                  <tr>
+                    <td className="py-4 font-extrabold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500"></span> BTC / USD
+                    </td>
+                    <td className="py-4 text-emerald-600 dark:text-emerald-400 font-bold">Long</td>
+                    <td className="py-4 font-mono">0.75 BTC</td>
+                    <td className="py-4 font-bold text-emerald-600 dark:text-emerald-400 font-mono">+$3,150.00</td>
+                    <td className="py-4 text-right"><span className="px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/40 text-emerald-700 dark:text-emerald-400 text-[10px] font-bold">Finalized</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* AI Neural Diagnostics Widget */}
+          <div className="bg-gradient-to-br from-indigo-50/80 dark:from-indigo-950/40 via-white dark:via-[#080c14] to-slate-50 dark:to-[#05070a] border border-indigo-200/80 dark:border-indigo-950 rounded-2xl p-6 flex flex-col justify-between shadow-sm dark:shadow-none">
+            <div>
+              <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 text-xs font-bold mb-3">
+                <BrainCircuit className="w-4 h-4 animate-pulse" />
+                <span>Neural Telemetry Scan</span>
+              </div>
+              <h3 className="text-base font-black text-slate-900 dark:text-slate-100 mb-2">Optimal Execution Window</h3>
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                Predictive AI models show your win probability peaks between <span className="text-indigo-600 dark:text-indigo-300 font-bold">09:30 AM – 11:00 AM EST</span> with strict risk parameters.
               </p>
             </div>
+
+            <div className="p-4 rounded-xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-sm">
+              <div className="flex items-center justify-between text-xs mb-2">
+                <span className="text-slate-500 dark:text-slate-400 font-bold">Model Confidence</span>
+                <span className="text-indigo-600 dark:text-indigo-400 font-black">94%</span>
+              </div>
+              <div className="w-full bg-slate-100 dark:bg-slate-950 h-2 rounded-full overflow-hidden">
+                <div className="bg-gradient-to-r from-indigo-500 to-violet-500 h-full rounded-full w-[94%] transition-all duration-1000"></div>
+              </div>
+            </div>
           </div>
 
-          <button className="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 py-2 rounded-lg text-xs font-medium transition-colors">
-            View All AI Analytics →
-          </button>
         </div>
 
-      </section>
+      </main>
+
     </div>
   );
 }

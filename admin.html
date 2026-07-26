@@ -84,7 +84,7 @@
             const email = document.getElementById('admin-email').value;
             const password = document.getElementById('admin-password').value;
 
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+            const { data, error } = await supabase.auth.signUp({ email, password });
             if (error) {
                 loginError.textContent = error.message;
             } else {

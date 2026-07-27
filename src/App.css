@@ -13,6 +13,7 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background: #0b0f17;
   color: #e2e8f0;
+  line-height: 1.6;
 }
 
 .app-root {
@@ -20,121 +21,93 @@ body {
   height: 100%;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
-.dashboard-container {
-  padding: 40px;
-  color: #e2e8f0;
-  background: linear-gradient(135deg, #0b0f17 0%, #1a1f2e 100%);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-}
-
-.dashboard-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.dashboard-header-content h1 {
-  font-size: 2rem;
-  color: #38bdf8;
-  margin-bottom: 8px;
-  font-weight: 700;
-}
-
-.connection-info {
-  color: #94a3b8;
-  font-size: 0.95rem;
-}
-
-.connection-info strong {
-  color: #38bdf8;
-  font-weight: 600;
-}
-
-.logout-btn {
-  padding: 10px 20px;
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  color: white;
-  border: none;
-  border-radius: 6px;
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1f2e;
   cursor: pointer;
-  font-weight: 600;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
-  white-space: nowrap;
+  transition: all 0.25s ease;
 }
 
-.logout-btn:hover {
-  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(239, 68, 68, 0.3);
+button:hover:not(:disabled) {
+  border-color: #38bdf8;
+  transform: translateY(-1px);
 }
 
-.logout-btn:active {
-  transform: translateY(0);
+button:focus,
+button:focus-visible {
+  outline: 2px solid #38bdf8;
+  outline-offset: 2px;
 }
 
-.dashboard-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
-.widgets-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 20px;
-  width: 100%;
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-.widget-col {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
 }
 
-/* Mobile Responsive */
-@media (max-width: 1024px) {
-  .dashboard-container {
-    padding: 30px;
-  }
-
-  .widgets-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .dashboard-header-content h1 {
-    font-size: 1.75rem;
-  }
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
 }
 
-@media (max-width: 768px) {
-  .dashboard-container {
-    padding: 20px;
-  }
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
 
-  .dashboard-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
+/* Selection Styling */
+::selection {
+  background: rgba(56, 189, 248, 0.3);
+  color: #e2e8f0;
+}
 
-  .dashboard-header-content h1 {
-    font-size: 1.5rem;
-  }
+::-moz-selection {
+  background: rgba(56, 189, 248, 0.3);
+  color: #e2e8f0;
+}
 
-  .logout-btn {
-    width: 100%;
-  }
+/* Smooth Scroll Behavior */
+html {
+  scroll-behavior: smooth;
+}
 
-  .widgets-grid {
-    grid-template-columns: 1fr;
-  }
+/* Utility Classes */
+.glass-card {
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.text-primary {
+  color: #38bdf8;
+}
+
+.text-success {
+  color: #10b981;
+}
+
+.text-error {
+  color: #ef4444;
+}
+
+.text-muted {
+  color: #94a3b8;
 }

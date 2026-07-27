@@ -1,0 +1,35 @@
+name: Recreate AxivoraX Website
+
+on:
+  workflow_dispatch: # Allows you to manually click "Run workflow" inside GitHub
+
+jobs:
+  build-site:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Grants the workflow permission to commit code back to the repo
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate Website Scaffolding & Components
+        run: |
+          echo "Initializing AxivoraX structure..."
+          mkdir -p client/src/components server/routes
+
+          if [ ! -f "client/src/App.jsx" ]; then
+            echo "Creating default Dashboard component..."
+            echo "import React from 'react'; export default function App() { return <div>AxivoraX Dashboard</div>; }" > client/src/App.jsx
+          fi
+
+      - name: Commit and Push Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "AI Agent: Auto-recreated website structure and dashboard components"
+          branch: main

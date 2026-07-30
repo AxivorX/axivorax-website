@@ -86,5 +86,24 @@
 
     checkAuth();
   </script>
-</body>
+
+<!-- AxivoraX AI Assistant -->
+<div class="ai-chat-box">
+    <h3>AxivoraX AI Assistant</h3>
+
+    <textarea 
+        id="ai-message"
+        placeholder="Ask AxivoraX..."
+    ></textarea>
+
+    <button onclick="sendAIMessage()">
+        Send
+    </button>
+
+    <pre id="ai-response">
+    </pre>
+</div>
+
+<script src="components/ai-chat.js"></script>
+\n</body>
 </html>

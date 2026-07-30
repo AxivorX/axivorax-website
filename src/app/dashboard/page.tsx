@@ -1,7 +1,8 @@
 // src/app/dashboard/page.tsx
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React
+import AIChat from "@/components/AIChat", { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { 
   Activity, 
@@ -295,6 +296,8 @@ export default function DashboardPage() {
           </div>
 
         </div>
+
+      <AIChat />
 
       </main>
 

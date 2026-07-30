@@ -1,3 +1,4 @@
+import AIChat from "@/components/AIChat";
 // src/app/page.tsx
 'use client';
 

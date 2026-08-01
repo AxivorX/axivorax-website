@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AxivoraX | Trading Performance Intelligence</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta name="description" content="AxivoraX helps traders track trades, analyse performance and improve decisions.">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+  <div class="logo">AxivoraX</div>
+  <a href="#waitlist" class="btn">Join Waitlist</a>
+</header>
+
+<section class="hero">
+  <h1>Trading Performance Intelligence Platform</h1>
+  <p>
+    Track your trades. Analyse your performance.
+    Improve your decisions.
+  </p>
+
+  <a href="#waitlist" class="btn">Join Waitlist</a>
+</section>
+
+
+<section class="features">
+  <h2>Why AxivoraX?</h2>
+
+  <div class="cards">
+
+    <div class="card">
+      <h3>Smart Trading Journal</h3>
+      <p>Record every trade and build a clear trading history.</p>
+    </div>
+
+    <div class="card">
+      <h3>Performance Analytics</h3>
+      <p>Understand your wins, losses and trading patterns.</p>
+    </div>
+
+    <div class="card">
+      <h3>AI Trade Insights</h3>
+      <p>Discover mistakes and improve your strategy.</p>
+    </div>
+
+    <div class="card">
+      <h3>Risk Management</h3>
+      <p>Track risk and make better trading decisions.</p>
+    </div>
+
+  </div>
+</section>
+
+
+<section id="waitlist" class="waitlist">
+
+  <h2>Get Early Access</h2>
+
+  <p>
+    Be among the first traders to experience
+    AxivoraX — Trading Performance Intelligence Platform.
+  </p>
+
+  <!-- ADDED IDs TO FORM ELEMENTS -->
+  <form id="waitlist-form" class="waitlist-form">
+
+    <input type="text" id="name-input" placeholder="Your Name" required>
+
+    <input type="email" id="email-input" placeholder="Email Address" required>
+
+    <select id="trade-select">
+      <option value="">What do you trade?</option>
+      <option value="Stocks">Stocks</option>
+      <option value="Crypto">Crypto</option>
+      <option value="Forex">Forex</option>
+      <option value="Options">Options</option>
+    </select>
+
+    <button type="submit" id="submit-btn" class="btn">
+      Request Early Access
+    </button>
+
+  </form>
+
+  <!-- SUCCESS MESSAGE (Hidden by default) -->
+  <div id="success-message" style="display: none; text-align: center; margin-top: 20px;">
+    <h3>You're on the list! 🎉</h3>
+    <p>We'll notify you as soon as early access opens.</p>
+  </div>
+
+</section>
+
+<footer>
+  <p>© 2026 AxivoraX. All rights reserved.</p>
+</footer>
+<!-- SUPABASE INTEGRATION SCRIPT -->
+<script>
+  // Initialize Supabase with your project credentials
+  const SUPABASE_URL = 'https://pnknjoeaacyttttgpabv.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBua25qb2VhYWN5dHR0dGdwYWJ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwNTA1OTQsImV4cCI6MjEwMDYyNjU5NH0.1o4idKmzH-FV0rY9udl3WKDu8B94ILkjtLiX-p7zk7A';
+  const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const form = document.getElementById('waitlist-form');
+  const successMessage = document.getElementById('success-message');
+  const submitBtn = document.getElementById('submit-btn');
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault(); // Prevents page from reloading/leaving
+
+    const name = document.getElementById('name-input').value;
+    const email = document.getElementById('email-input').value;
+    const asset = document.getElementById('trade-select').value;
+
+    submitBtn.textContent = 'Joining...';
+    submitBtn.disabled = true;
+
+    try {
+      // Sends data straight to your Supabase table
+      const { error } = await _supabase
+        .from('waitlist')
+        .insert([{ name: name, email: email, asset_type: asset }]);
+
+      if (error) {
+        if (error.code === '23505') {
+          alert("This email is already on the waitlist!");
+        } else {
+          alert("Something went wrong. Please try again.");
+        }
+        submitBtn.textContent = 'Request Early Access';
+        submitBtn.disabled = false;
+      } else {
+        // Hides form smoothly and shows success text
+        form.style.display = 'none';
+        successMessage.style.display = 'block';
+      }
+    } catch (err) {
+      alert("Network error. Please try again.");
+      submitBtn.textContent = 'Request Early Access';
+      submitBtn.disabled = false;
+    }
+  });
+</script>
+
+</body>
+</html>
+</script>
+</body>
+</html>

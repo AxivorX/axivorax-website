@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+<rect width="800" height="500" rx="40" fill="#050817"/>
+<rect x="120" y="100" width="560" height="300" rx="25" fill="#ffffff10"/>
+<polygon points="360,190 360,310 520,250" fill="#00c8ff"/>
+<text x="400" y="370" fill="white" font-size="30" text-anchor="middle">AX-01 Demo</text>
+</svg>

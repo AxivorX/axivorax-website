@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+<rect width="800" height="500" rx="40" fill="#050817"/>
+<circle cx="200" cy="250" r="80" fill="#6d35ff"/>
+<circle cx="600" cy="250" r="80" fill="#00c8ff"/>
+<path d="M280 250H520" stroke="white" stroke-width="8"/>
+<text x="400" y="120" fill="white" font-size="32" text-anchor="middle">Broker Connectivity</text>
+</svg>

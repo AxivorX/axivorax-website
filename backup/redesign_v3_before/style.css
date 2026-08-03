@@ -1,0 +1,101 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #050816;
+    color: white;
+    line-height: 1.6;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: 30px;
+    text-decoration: none;
+    color: white;
+    background: #1677ff;
+}
+
+.hero,
+.philosophy,
+.intelligence,
+.flow,
+.dashboard-preview,
+#demo,
+.cta {
+    padding: 70px 20px;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: clamp(2rem, 6vw, 4rem);
+}
+
+.cards {
+    display: grid;
+    gap: 20px;
+}
+
+.card {
+    padding: 25px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+    transition: transform .3s ease;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+}
+
+.metrics {
+    display: grid;
+    gap: 15px;
+}
+
+.metrics div {
+    padding: 20px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 15px;
+    filter: blur(1px);
+}
+
+.video-placeholder {
+    margin: 30px auto;
+    padding: 60px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.08);
+}
+
+footer {
+    padding: 30px;
+    text-align: center;
+}
+
+
+@media (min-width: 768px) {
+
+    .cards {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .metrics {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+}

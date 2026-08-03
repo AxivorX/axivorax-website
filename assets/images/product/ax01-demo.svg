@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700">
+
+<defs>
+<linearGradient id="bg" x2="1" y2="1">
+<stop stop-color="#050817"/>
+<stop offset="1" stop-color="#101b48"/>
+</linearGradient>
+</defs>
+
+<rect width="1200" height="700" rx="40" fill="url(#bg)"/>
+
+<rect x="90" y="80" width="1020" height="500" rx="35"
+fill="#ffffff08"
+stroke="#ffffff25"/>
+
+<!-- browser header -->
+<rect x="90" y="80" width="1020" height="70" rx="35"
+fill="#ffffff10"/>
+
+<circle cx="140" cy="115" r="10" fill="#ff5555"/>
+<circle cx="175" cy="115" r="10" fill="#ffc857"/>
+<circle cx="210" cy="115" r="10" fill="#00d084"/>
+
+<text x="270" y="125"
+fill="#d7ddff"
+font-size="26"
+font-family="Arial">
+AX-01 Product Walkthrough
+</text>
+
+
+<!-- play button -->
+<circle cx="600" cy="340" r="90"
+fill="#6d35ff"/>
+
+<polygon points="570,290 570,390 660,340"
+fill="white"/>
+
+
+<text x="600" y="500"
+fill="white"
+font-size="38"
+font-family="Arial"
+text-anchor="middle"
+font-weight="bold">
+AI Trading Intelligence Demo
+</text>
+
+<text x="600" y="545"
+fill="#bfc8ff"
+font-size="24"
+font-family="Arial"
+text-anchor="middle">
+Dashboard • AI Coach • Journal
+</text>
+
+</svg>

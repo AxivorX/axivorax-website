@@ -1588,3 +1588,43 @@ nav a{
 
 }
 
+
+/* AX-01 Product Screenshot Styling */
+
+.hero-visual img,
+.section-visual img{
+    width:100%;
+    max-width:900px;
+    border-radius:28px;
+    border:1px solid #ffffff25;
+    background:#050817;
+    box-shadow:
+        0 30px 80px #000000aa,
+        0 0 60px #6d35ff33;
+    transition:transform .4s ease, box-shadow .4s ease;
+}
+
+.hero-visual img:hover,
+.section-visual img:hover{
+    transform:translateY(-8px) scale(1.02);
+    box-shadow:
+        0 40px 100px #000000cc,
+        0 0 80px #00c8ff44;
+}
+
+.section-visual{
+    display:flex;
+    justify-content:center;
+    margin:40px 0;
+}
+
+@media(max-width:900px){
+
+.hero-visual img,
+.section-visual img{
+    width:100%;
+    border-radius:20px;
+}
+
+}
+

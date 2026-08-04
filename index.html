@@ -512,5 +512,94 @@ risk awareness and better trading processes.
 
 </footer>
 
+
+<!-- AX-01 Floating AI Assistant -->
+<div id="ax01-float" class="ax01-float" onclick="toggleAX01()">
+    <div class="ax01-ghost">
+        <div class="ax01-energy-ring"></div>
+        <div class="ax01-core">
+            <span>AX</span>
+            <small>01</small>
+        </div>
+        <div class="ax01-status"></div>
+    </div>
+</div>
+
+<div id="ax01-chat" class="ax01-chat">
+    <div class="ax01-header">
+        <strong>✦ AX-01 Intelligence</strong>
+        <span class="ax01-online">● ONLINE</span>
+        <button onclick="event.stopPropagation(); toggleAX01()">×</button>
+    </div>
+
+    <textarea id="ai-message" placeholder="Ask AX-01..."></textarea>
+
+    <button onclick="sendAIMessage()">
+        Ask AX-01
+    </button>
+
+    <pre id="ai-response">
+    </pre>
+</div>
+
+<script>
+function toggleAX01(){
+    document.getElementById("ax01-chat")
+    .classList.toggle("active");
+}
+</script>
+
 </body>
 </html>
+
+
+<!-- AX-01 Live Demo -->
+<section class="ax01-live-demo">
+<h2>Ask AX-01 AI Agent</h2>
+
+<button id="ax01DemoBtn">
+Ask AX-01
+</button>
+
+<pre id="ax01Response">
+AX-01 ready...
+</pre>
+
+<script>
+document.getElementById("ax01DemoBtn").onclick = async function(){
+
+document.getElementById("ax01Response").innerText =
+"AX-01 analyzing...";
+
+try {
+
+let response = await fetch(
+"http://127.0.0.1:8000/demo/analyze",
+{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+message:"Analyze AxivoraX landing page"
+})
+});
+
+let data = await response.json();
+
+document.getElementById("ax01Response").innerText =
+data.data.result;
+
+}
+catch(error){
+
+document.getElementById("ax01Response").innerText =
+"AX-01 connection error: " + error;
+
+}
+
+}
+</script>
+
+</section>
+

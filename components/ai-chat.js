@@ -1,7 +1,7 @@
 async function askAxivoraX(message) {
 
     const response = await fetch(
-        "http://127.0.0.1:8000/api/agent",
+        "http://127.0.0.1:8000/demo/analyze",
         {
             method: "POST",
 
@@ -10,7 +10,7 @@ async function askAxivoraX(message) {
             },
 
             body: JSON.stringify({
-                user_id: 1,
+                
                 message: message
             })
         }
@@ -46,7 +46,7 @@ async function sendAIMessage() {
 
 
     output.innerHTML =
-        "Thinking...";
+        "🤖 AX-01 is analyzing...";
 
 
     try {
@@ -57,18 +57,26 @@ async function sendAIMessage() {
             );
 
 
-        output.innerHTML =
-            JSON.stringify(
-                result,
-                null,
-                2
-            );
+        if (result.data && result.data.result) {
+
+            output.innerHTML =
+                result.data.result
+                .replace(/\\n/g, "<br>");
+
+        } else {
+
+            output.innerHTML =
+                JSON.stringify(result, null, 2);
+
+        }
+
+        input.value = "";
 
 
     } catch(error) {
 
         output.innerHTML =
-            "AI Agent is offline";
+            "⚠️ AX-01 connection error. Please check the AI server.";
 
     }
 

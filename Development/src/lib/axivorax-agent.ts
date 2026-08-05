@@ -4,7 +4,7 @@ export async function askAxivoraX(
 ) {
 
   const response = await fetch(
-    "/api/agent",
+    "http://127.0.0.1:8000/api/agent",
     {
       method: "POST",
 

@@ -1,6 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- AX01_DEV_TEST_LOGIN
+     DEVELOPMENT ONLY — REMOVE BEFORE PRODUCTION
+-->
+<script>
+(function () {
+    "use strict";
+
+    const TEST_KEY = "ax01_dev_test_login";
+
+    function isTestMode() {
+        return new URLSearchParams(location.search)
+            .get("ax01_test") === "1";
+    }
+
+    if (!isTestMode()) return;
+
+    sessionStorage.setItem(TEST_KEY, "true");
+
+    window.AX01_DEV_TEST_LOGIN = true;
+
+    document.documentElement.dataset.ax01TestLogin = "true";
+})();
+</script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AxivoraX | Trader Dashboard</title>

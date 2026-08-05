@@ -534,6 +534,9 @@ risk awareness and better trading processes.
 
     <textarea id="ai-message" placeholder="Ask AX-01..."></textarea>
 
+    <button onclick="sendAIMessage()">
+        Ask AX-01
+    </button>
 
     <pre id="ai-response">
     </pre>
@@ -546,69 +549,57 @@ function toggleAX01(){
 }
 </script>
 
-
-<!-- AX-01 Floating AI -->
-<button
-    id="ax01-float"
-    type="button"
-    aria-label="Open AX-01 AI"
-    onclick="toggleAX01()">
-    AX-01
-</button>
-
-<div
-    id="ax01-popup"
-    aria-hidden="true">
-
-    <div class="ax01-header">
-        <div>
-            <div class="ax01-title">AX-01</div>
-            <div id="ax01-status" class="ax01-status">● ONLINE</div>
-        </div>
-
-        <button
-            type="button"
-            class="ax01-close"
-            aria-label="Close AX-01"
-            onclick="toggleAX01()">
-            ×
-        </button>
-    </div>
-
-    <div
-        id="ax01-messages"
-        class="ax01-messages"
-        aria-live="polite">
-    </div>
-
-    <button
-        type="button"
-        class="ax01-clear"
-        onclick="clearAX01Chat()">
-        Clear
-    </button>
-
-    <div class="ax01-compose">
-        <textarea
-            id="ax01-input"
-            class="ax01-input"
-            rows="2"
-            placeholder="Ask AX-01..."
-            aria-label="Message AX-01"></textarea>
-
-        <button
-            id="ax01-send"
-            type="button"
-            class="ax01-send">
-            Send
-        </button>
-    </div>
-</div>
-
 </body>
 </html>
 
 
 <!-- AX-01 Live Demo -->
+<section class="ax01-live-demo">
+<h2>Ask AX-01 AI Agent</h2>
 
+<button id="ax01DemoBtn">
+Ask AX-01
+</button>
+
+<pre id="ax01Response">
+AX-01 ready...
+</pre>
+
+<script>
+document.getElementById("ax01DemoBtn").onclick = async function(){
+
+document.getElementById("ax01Response").innerText =
+"AX-01 analyzing...";
+
+try {
+
+let response = await fetch(
+"http://127.0.0.1:8000/demo/analyze",
+{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+message:"Analyze AxivoraX landing page"
+})
+});
+
+let data = await response.json();
+
+document.getElementById("ax01Response").innerText =
+data.data.result;
+
+}
+catch(error){
+
+document.getElementById("ax01Response").innerText =
+"AX-01 connection error: " + error;
+
+}
+
+}
+</script>
+
+</section>
 

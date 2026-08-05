@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f9; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .hidden { display: none !important; }
+        input, button { padding: 10px; margin: 5px 0; width: 100%; box-sizing: border-box; }
+        button { background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0051cc; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #f8f9fa; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Login Form -->
+        <div id="login-section">
+            <h2>Admin Login</h2>
+            <form id="login-form">
+                <input type="email" id="email" placeholder="Email Address" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <p id="error-message" style="color: red;"></p>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard-section" class="hidden">
+            <h2>Waitlist Dashboard</h2>
+            <button id="logout-btn" style="background: #e00; width: auto; padding: 5px 15px; float: right;">Logout</button>
+            <div style="clear: both;"></div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Joined At</th>
+                    </tr>
+                </thead>
+                <tbody id="waitlist-table-body">
+                    <!-- Data will load here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://pnknjoeaacyttttgpabv.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBua25qb2VhYWN5dHR0dGdwYWJ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwNTA1OTQsImV4cCI6MjEwMDYyNjU5NH0.1o4idKmzH-FV0rY9udl3WKDu8B94ILkjtLiX-p7zk7A';
+        
+        // Using a completely unique variable name 'supabaseClient' to avoid any conflicts
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const loginSection = document.getElementById('login-section');
+        const dashboardSection = document.getElementById('dashboard-section');
+        const loginForm = document.getElementById('login-form');
+        const errorMessage = document.getElementById('error-message');
+        const logoutBtn = document.getElementById('logout-btn');
+        const tableBody = document.getElementById('waitlist-table-body');
+
+        // Check active session on load
+        async function checkUser() {
+            const { data: { session }, error } = await supabaseClient.auth.getSession();
+            if (session) {
+                showDashboard();
+            } else {
+                showLogin();
+            }
+        }
+
+        function showLogin() {
+            loginSection.classList.remove('hidden');
+            dashboardSection.classList.add('hidden');
+        }
+
+        function showDashboard() {
+            loginSection.classList.add('hidden');
+            dashboardSection.classList.remove('hidden');
+            fetchWaitlist();
+        }
+
+        // Handle Login Submission (Temporarily set to signUp to create your account if needed, then change back to signInWithPassword)
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            errorMessage.textContent = '';
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Change this back to signInWithPassword once your user is created
+            const { data, error } = await supabaseClient.auth.signUp({ email, password });
+
+            if (error) {
+                errorMessage.textContent = error.message;
+            } else {
+                showDashboard();
+            }
+        });
+
+        // Handle Logout
+        logoutBtn.addEventListener('click', async () => {
+            await supabaseClient.auth.signOut();
+            showLogin();
+        });
+
+        // Fetch Data for Dashboard
+        async function fetchWaitlist() {
+            tableBody.innerHTML = '';
+            const { data, error } = await supabaseClient.from('waitlist').select('*');
+
+            if (error) {
+                console.error('Error fetching waitlist:', error.message);
+                return;
+            }
+
+            if (data && data.length > 0) {
+                data.forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `<td>${row.email || 'N/A'}</td><td>${new Date(row.created_at).toLocaleString() || 'N/A'}</td>`;
+                    tableBody.appendChild(tr);
+                });
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="2" style="text-align: center;">No entries found</td></tr>';
+            }
+        }
+
+        // Run check on page load
+        checkUser();
+    </script>
+</body>
+</html>

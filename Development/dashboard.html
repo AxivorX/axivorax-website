@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AxivoraX | Trader Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body { font-family: sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 20px; }
+    .container { max-width: 900px; margin: 0 auto; background: #1e293b; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); box-sizing: border-box; }
+    .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 15px; margin-bottom: 20px; }
+    h2 { margin: 0; color: #38bdf8; }
+    button { padding: 10px 16px; background: #ef4444; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+    button:hover { background: #dc2626; }
+    .welcome-box { background: #0f172a; padding: 20px; border-radius: 6px; border: 1px solid #334155; margin-bottom: 20px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
+    .stat-card { background: #334155; padding: 15px; border-radius: 6px; text-align: center; }
+    .stat-card h3 { margin: 0 0 10px 0; font-size: 14px; color: #94a3b8; }
+    .stat-card p { margin: 0; font-size: 20px; font-weight: bold; color: #f8fafc; }
+    #dashboard-content { display: none; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div id="loading" style="text-align: center; padding: 40px;">Checking authentication...</div>
+
+    <div id="dashboard-content">
+      <div class="header">
+        <h2>AxivoraX Dashboard</h2>
+        <button id="logout-btn">Log Out</button>
+      </div>
+
+      <div class="welcome-box">
+        <p id="user-email-display" style="margin: 0; font-size: 16px;"></p>
+      </div>
+
+      <h3>Your Trading Overview</h3>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>Total Trades Logged</h3>
+          <p>0</p>
+        </div>
+        <div class="stat-card">
+          <h3>Win Rate</h3>
+          <p>0%</p>
+        </div>
+        <div class="stat-card">
+          <h3>Net Profit / Loss</h3>
+          <p>$0.00</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://pnknjoeaacyttttgpabv.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBua25qb2VhYWN5dHR0dGdwYWJ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwNTA1OTQsImV4cCI6MjEwMDYyNjU5NH0.1o4idKmzH-FV0rY9udl3WKDu8B94ILkjtLiX-p7zk7A';
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const loadingDiv = document.getElementById('loading');
+    const contentDiv = document.getElementById('dashboard-content');
+    const userEmailDisplay = document.getElementById('user-email-display');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    // Check if user is logged in on page load
+    async function checkAuth() {
+      const { data: { session }, error } = await _supabase.auth.getSession();
+
+      if (error || !session) {
+        // If not logged in, kick them back to login page
+        window.location.href = 'login.html';
+      } else {
+        // Show dashboard and display user email
+        loadingDiv.style.display = 'none';
+        contentDiv.style.display = 'block';
+        userEmailDisplay.textContent = `Logged in as: ${session.user.email}`;
+      }
+    }
+
+    // Handle logout
+    logoutBtn.addEventListener('click', async () => {
+      await _supabase.auth.signOut();
+      window.location.href = 'login.html';
+    });
+
+    checkAuth();
+  </script>
+
+<!-- AxivoraX AI Assistant -->
+<div class="ai-chat-box">
+    <h3>AxivoraX AI Assistant</h3>
+
+    <textarea 
+        id="ai-message"
+        placeholder="Ask AxivoraX..."
+    ></textarea>
+
+    <button onclick="sendAIMessage()">
+        Send
+    </button>
+
+    <pre id="ai-response">
+    </pre>
+</div>
+
+<script src="components/ai-chat.js"></script>
+\n</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AxivoraX | Create Account</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body { font-family: sans-serif; background: #0f172a; color: #f8fafc; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+    .card { background: #1e293b; padding: 40px; border-radius: 8px; width: 100%; max-width: 400px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+    h2 { margin-top: 0; margin-bottom: 20px; text-align: center; }
+    input { width: 100%; padding: 12px; margin-bottom: 15px; background: #0f172a; border: 1px solid #475569; color: white; border-radius: 4px; box-sizing: border-box; }
+    button { width: 100%; padding: 12px; background: #3b82f6; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+    button:hover { background: #2563eb; }
+    #message { margin-top: 15px; text-align: center; font-size: 14px; }
+    .link { text-align: center; margin-top: 20px; font-size: 14px; }
+    .link a { color: #3b82f6; text-decoration: none; }
+    .link a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Create Account</h2>
+    <form id="signup-form">
+      <input type="email" id="email" placeholder="Email Address" required />
+      <input type="password" id="password" placeholder="Password (min 6 characters)" required />
+      <button type="submit" id="submit-btn">Sign Up</button>
+    </form>
+    <div id="message"></div>
+    <div class="link">
+      Already have an account? <a href="login.html">Log in</a>
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://pnknjoeaacyttttgpabv.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBua25qb2VhYWN5dHR0dGdwYWJ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwNTA1OTQsImV4cCI6MjEwMDYyNjU5NH0.1o4idKmzH-FV0rY9udl3WKDu8B94ILkjtLiX-p7zk7A';
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const form = document.getElementById('signup-form');
+    const message = document.getElementById('message');
+    const submitBtn = document.getElementById('submit-btn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      submitBtn.textContent = 'Creating account...';
+      submitBtn.disabled = true;
+
+      const { data, error } = await _supabase.auth.signUp({
+        email: email,
+        password: password,
+      });
+
+      if (error) {
+        message.textContent = error.message;
+        message.style.color = '#ef4444';
+        submitBtn.textContent = 'Sign Up';
+        submitBtn.disabled = false;
+      } else {
+        message.textContent = 'Success! Check your email to confirm your account, or log in.';
+        message.style.color = '#22c55e';
+        submitBtn.textContent = 'Sign Up';
+        form.reset();
+      }
+    });
+  </script>
+</body>
+</html>

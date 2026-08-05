@@ -2611,3 +2611,267 @@ button:hover,
         margin-right: 10px;
     }
 }
+
+/* =========================================================
+   AXIVORAX — LANDING MOBILE VISUAL FIX
+   DEVELOPMENT ONLY
+   ========================================================= */
+
+html {
+    width: 100%;
+    overflow-x: hidden;
+    background: #030611;
+}
+
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    background:
+        radial-gradient(circle at 50% 8%, rgba(124,58,237,.16), transparent 32%),
+        #030611;
+}
+
+/* Keep every main section inside the mobile viewport */
+section,
+header,
+footer {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Images must remain visible and properly contained */
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.hero-visual,
+.section-visual {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 24px;
+    background:
+        radial-gradient(circle at center, rgba(124,58,237,.16), transparent 65%),
+        rgba(255,255,255,.025);
+    border: 1px solid rgba(255,255,255,.10);
+    box-shadow: 0 20px 60px rgba(0,0,0,.40);
+}
+
+.hero-visual img,
+.section-visual img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Prevent huge desktop typography from breaking mobile */
+@media (max-width: 900px) {
+
+    body {
+        font-size: 16px;
+    }
+
+    section {
+        padding: 42px 18px;
+    }
+
+    h1 {
+        font-size: clamp(38px, 11vw, 56px);
+        line-height: 1.08;
+        margin: 20px 0;
+    }
+
+    h2 {
+        font-size: clamp(28px, 8vw, 40px);
+        line-height: 1.15;
+        margin-bottom: 26px;
+    }
+
+    h3 {
+        line-height: 1.25;
+    }
+
+    p {
+        font-size: 16px;
+        line-height: 1.55;
+    }
+
+    .hero {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        padding: 34px 18px 48px;
+    }
+
+    .hero-visual {
+        order: 1;
+        margin-bottom: 4px;
+        border-radius: 18px;
+    }
+
+    .hero > div:not(.hero-visual) {
+        order: 2;
+    }
+
+    .hero-visual img {
+        max-height: 420px;
+    }
+
+    .grid,
+    .analytics-score,
+    .insight-grid,
+    .broker-grid,
+    .ai-cards {
+        grid-template-columns: 1fr !important;
+        gap: 16px;
+    }
+
+    .glass {
+        padding: 20px;
+        border-radius: 18px;
+    }
+
+    .dashboard,
+    .analytics-dashboard,
+    .demo-window,
+    .broker-panel,
+    .trust-card,
+    .final-cta {
+        width: 100%;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .dashboard-preview {
+        grid-template-columns: 1fr !important;
+    }
+
+    .preview-grid,
+    .workspace,
+    .terminal-body {
+        grid-template-columns: 1fr !important;
+    }
+
+    .chart-window,
+    .ai-panel,
+    .main-chart,
+    .ai-console {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .section-visual {
+        margin-bottom: 24px;
+        border-radius: 18px;
+    }
+
+    .section-visual img {
+        max-height: 360px;
+        object-fit: contain;
+    }
+
+    footer {
+        padding: 40px 18px;
+    }
+
+    .footer-content {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* AX-01 must remain floating, not become a normal page section */
+    #ax01-float {
+        position: fixed !important;
+        right: 16px !important;
+        bottom: calc(16px + env(safe-area-inset-bottom)) !important;
+        left: auto !important;
+        top: auto !important;
+        z-index: 99999 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: auto !important;
+        min-width: 58px !important;
+        min-height: 58px !important;
+        padding: 12px 16px !important;
+        border-radius: 999px !important;
+        white-space: nowrap !important;
+        box-shadow:
+            0 10px 30px rgba(0,0,0,.45),
+            0 0 28px rgba(124,58,237,.35) !important;
+    }
+
+    #ax01-float .ax01-float-mark {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.15);
+    }
+
+    #ax01-float .ax01-float-label {
+        display: inline-block !important;
+        margin-left: 8px;
+    }
+}
+
+/* Very small phones */
+@media (max-width: 420px) {
+
+    section {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    h1 {
+        font-size: 36px;
+    }
+
+    h2 {
+        font-size: 28px;
+    }
+
+    .hero-visual img,
+    .section-visual img {
+        max-height: 300px;
+    }
+
+    #ax01-float {
+        right: 12px !important;
+        bottom: calc(12px + env(safe-area-inset-bottom)) !important;
+        min-width: 54px !important;
+        min-height: 54px !important;
+        padding: 9px 12px !important;
+    }
+
+    #ax01-float .ax01-float-label {
+        display: none !important;
+    }
+}
+
+/* Prevent horizontal overflow from old desktop components */
+.saas-window,
+.app-main,
+.app-grid,
+.metric-grid,
+.analytics-dashboard,
+.analytics-chart,
+.demo-window,
+.broker-panel,
+.trust-card,
+.final-cta {
+    max-width: 100%;
+    overflow: hidden;
+}
+

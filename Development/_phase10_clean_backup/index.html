@@ -514,13 +514,23 @@ risk awareness and better trading processes.
 
 
 <!-- AX-01 Floating AI Assistant -->
-
-        
-        
+<div id="ax01-float" class="ax01-float" onclick="toggleAX01()">
+    <div class="ax01-ghost">
+        <div class="ax01-energy-ring"></div>
+        <div class="ax01-core">
+            <span>AX</span>
+            <small>01</small>
+        </div>
+        <div class="ax01-status"></div>
     </div>
 </div>
 
-
+<div id="ax01-chat" class="ax01-chat">
+    <div class="ax01-header">
+        <strong>✦ AX-01 Intelligence</strong>
+        <span class="ax01-online">● ONLINE</span>
+        <button onclick="event.stopPropagation(); toggleAX01()">×</button>
+    </div>
 
     <textarea id="ai-message" placeholder="Ask AX-01..."></textarea>
 
@@ -538,55 +548,32 @@ function toggleAX01(){
 
 
 <!-- AX-01 Floating AI -->
-
-
-
-            
-        </div>
-
-        
-    </div>
-
-    
-
-    
-
-    
-</div>
-
-
-<!-- AX-01 SINGLE FLOATING WIDGET -->
 <button
     id="ax01-float"
     type="button"
-    aria-label="Open AX-01"
-    aria-controls="ax01-popup"
-    aria-expanded="false">
-    <span class="ax01-float-mark">AX</span>
-    <span class="ax01-float-label">AX-01</span>
+    aria-label="Open AX-01 AI"
+    onclick="toggleAX01()">
+    AX-01
 </button>
 
-<section
+<div
     id="ax01-popup"
-    class="ax01-popup"
-    role="dialog"
-    aria-modal="false"
-    aria-label="AX-01 AI Assistant"
     aria-hidden="true">
 
-    <header class="ax01-popup-header">
+    <div class="ax01-header">
         <div>
-            <strong>AX-01</strong>
-            <span id="ax01-status">● ONLINE</span>
+            <div class="ax01-title">AX-01</div>
+            <div id="ax01-status" class="ax01-status">● ONLINE</div>
         </div>
 
         <button
-            id="ax01-close"
             type="button"
-            aria-label="Close AX-01">
+            class="ax01-close"
+            aria-label="Close AX-01"
+            onclick="toggleAX01()">
             ×
         </button>
-    </header>
+    </div>
 
     <div
         id="ax01-messages"
@@ -594,27 +581,29 @@ function toggleAX01(){
         aria-live="polite">
     </div>
 
-    <div class="ax01-popup-actions">
-        <button id="ax01-clear" type="button">
-            Clear
-        </button>
-    </div>
+    <button
+        type="button"
+        class="ax01-clear"
+        onclick="clearAX01Chat()">
+        Clear
+    </button>
 
-    <form id="ax01-form" class="ax01-compose">
+    <div class="ax01-compose">
         <textarea
             id="ax01-input"
+            class="ax01-input"
             rows="2"
-            maxlength="4000"
             placeholder="Ask AX-01..."
             aria-label="Message AX-01"></textarea>
 
         <button
             id="ax01-send"
-            type="submit">
+            type="button"
+            class="ax01-send">
             Send
         </button>
-    </form>
-</section>
+    </div>
+</div>
 
 </body>
 </html>

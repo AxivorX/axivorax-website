@@ -1,36 +1,19 @@
 (() => {
     "use strict";
 
-    const AX01_ENDPOINT = "/demo/analyze";
-    const AX01_TIMEOUT = 15000;
+    const ENDPOINT = "/demo/analyze";
+    const TIMEOUT_MS = 15000;
 
-    function escapeText(value) {
-        return String(value ?? "");
-    }
-
-    function formatResponse(text) {
-        return escapeText(text)
-            .replace(/\r\n/g, "\n")
-            .replace(/\\n/g, "\n")
-            .trim();
-    }
-
-    function getElements() {
-        return {
-            popup: document.getElementById("ax01-popup"),
-            messages: document.getElementById("ax01-messages"),
-            input: document.getElementById("ax01-input"),
-            send: document.getElementById("ax01-send"),
-            status: document.getElementById("ax01-status")
-        };
+    function $(id) {
+        return document.getElementById(id);
     }
 
     function addMessage(role, text) {
-        const { messages } = getElements();
+        const messages = $("ax01-messages");
         if (!messages) return;
 
         const item = document.createElement("div");
-        item.className = `ax01-message ${role}`;
+        item.className = `ax01-message ax01-message-${role}`;
 
         const label = document.createElement("div");
         label.className = "ax01-message-label";
@@ -38,7 +21,7 @@
 
         const body = document.createElement("div");
         body.className = "ax01-message-body";
-        body.textContent = formatResponse(text);
+        body.textContent = String(text ?? "");
 
         item.append(label, body);
         messages.appendChild(item);
@@ -46,18 +29,20 @@
         messages.scrollTop = messages.scrollHeight;
     }
 
-    function setStatus(text, state = "") {
-        const { status } = getElements();
+    function setStatus(text, state) {
+        const status = $("ax01-status");
         if (!status) return;
 
         status.textContent = text;
-        status.dataset.state = state;
+        status.dataset.state = state || "";
     }
 
     function setBusy(busy) {
-        const { input, send } = getElements();
+        const input = $("ax01-input");
+        const send = $("ax01-send");
 
         if (input) input.disabled = busy;
+
         if (send) {
             send.disabled = busy;
             send.textContent = busy ? "Analyzing…" : "Send";
@@ -69,30 +54,55 @@
         );
     }
 
-    async function sendAIMessage() {
-        const { input } = getElements();
+    function openAX01() {
+        const popup = $("ax01-popup");
+        const float = $("ax01-float");
+        const input = $("ax01-input");
 
-        if (!input || input.disabled) return;
+        if (!popup) return;
 
-        const message = input.value.trim();
+        popup.classList.add("open");
+        popup.setAttribute("aria-hidden", "false");
 
-        if (!message) {
-            input.focus();
-            return;
-        }
+        if (float) float.setAttribute("aria-expanded", "true");
 
-        addMessage("user", message);
-        input.value = "";
-        setBusy(true);
+        setTimeout(() => input?.focus(), 100);
+    }
 
+    function closeAX01() {
+        const popup = $("ax01-popup");
+        const float = $("ax01-float");
+
+        if (!popup) return;
+
+        popup.classList.remove("open");
+        popup.setAttribute("aria-hidden", "true");
+
+        if (float) float.setAttribute("aria-expanded", "false");
+    }
+
+    function clearAX01() {
+        const messages = $("ax01-messages");
+        if (!messages) return;
+
+        messages.replaceChildren();
+
+        addMessage(
+            "assistant",
+            "Hello. I'm AX-01. How can I help?"
+        );
+    }
+
+    async function sendAX01(message) {
         const controller = new AbortController();
+
         const timeout = setTimeout(
             () => controller.abort(),
-            AX01_TIMEOUT
+            TIMEOUT_MS
         );
 
         try {
-            const response = await fetch(AX01_ENDPOINT, {
+            const response = await fetch(ENDPOINT, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -110,64 +120,78 @@
 
             const result = await response.json();
 
-            const answer =
+            return (
                 result?.data?.result ??
                 result?.result ??
-                "AX-01 returned no response.";
-
-            addMessage("assistant", answer);
-
-        } catch (error) {
-            const message =
-                error?.name === "AbortError"
-                    ? "AX-01 request timed out. Please try again."
-                    : "AX-01 connection error. Please check the AI server.";
-
-            addMessage("assistant", message);
-            setStatus("● ERROR", "error");
+                "AX-01 returned an empty response."
+            );
 
         } finally {
             clearTimeout(timeout);
+        }
+    }
+
+    async function submitAX01(event) {
+        event.preventDefault();
+
+        const input = $("ax01-input");
+        if (!input || input.disabled) return;
+
+        const message = input.value.trim();
+
+        if (!message) {
+            input.focus();
+            return;
+        }
+
+        addMessage("user", message);
+        input.value = "";
+
+        setBusy(true);
+
+        try {
+            const answer = await sendAX01(message);
+            addMessage("assistant", answer);
+
+        } catch (error) {
+            const text =
+                error?.name === "AbortError"
+                    ? "AX-01 timed out. Please try again."
+                    : "AX-01 could not connect to the AI server.";
+
+            addMessage("assistant", text);
+            setStatus("● ERROR", "error");
+
+        } finally {
             setBusy(false);
             input.focus();
         }
     }
 
-    function toggleAX01() {
-        const { popup, input } = getElements();
-        if (!popup) return;
-
-        const open = popup.classList.toggle("open");
-        popup.setAttribute("aria-hidden", String(!open));
-
-        if (open && input) {
-            setTimeout(() => input.focus(), 100);
-        }
-    }
-
-    function clearAX01Chat() {
-        const { messages } = getElements();
-        if (!messages) return;
-
-        messages.replaceChildren();
-
-        addMessage(
-            "assistant",
-            "Hello. I'm AX-01. How can I help?"
-        );
-    }
-
     function initAX01() {
-        const { input, send } = getElements();
+        const float = $("ax01-float");
+        const close = $("ax01-close");
+        const clear = $("ax01-clear");
+        const form = $("ax01-form");
+        const input = $("ax01-input");
 
-        if (!input || !send) return;
+        if (!float || !close || !clear || !form || !input) {
+            console.warn("AX-01 widget markup not found.");
+            return;
+        }
 
-        send.addEventListener("click", sendAIMessage);
+        float.addEventListener("click", openAX01);
+        close.addEventListener("click", closeAX01);
+        clear.addEventListener("click", clearAX01);
+        form.addEventListener("submit", submitAX01);
 
         input.addEventListener("keydown", event => {
-            if (event.key === "Enter" && !event.shiftKey) {
+            if (
+                event.key === "Enter" &&
+                !event.shiftKey
+            ) {
                 event.preventDefault();
-                sendAIMessage();
+                form.requestSubmit();
             }
         });
 
@@ -177,9 +201,18 @@
         );
     }
 
-    window.sendAIMessage = sendAIMessage;
-    window.toggleAX01 = toggleAX01;
-    window.clearAX01Chat = clearAX01Chat;
+    window.toggleAX01 = () => {
+        const popup = $("ax01-popup");
 
-    document.addEventListener("DOMContentLoaded", initAX01);
+        if (popup?.classList.contains("open")) {
+            closeAX01();
+        } else {
+            openAX01();
+        }
+    };
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        initAX01
+    );
 })();

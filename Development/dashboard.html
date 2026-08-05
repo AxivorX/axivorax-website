@@ -22,96 +22,7 @@
 </head>
 <body>
 
-  <div class="container">
-    <div id="loading" style="text-align: center; padding: 40px;">Checking authentication...</div>
-
-    <div id="dashboard-content">
-      <div class="header">
-        <h2>AxivoraX Dashboard</h2>
-        <button id="logout-btn">Log Out</button>
-      </div>
-
-      <div class="welcome-box">
-        <p id="user-email-display" style="margin: 0; font-size: 16px;"></p>
-      </div>
-
-      <h3>Your Trading Overview</h3>
-      <div class="stats-grid">
-        <div class="stat-card">
-          <h3>Total Trades Logged</h3>
-          <p>0</p>
-        </div>
-        <div class="stat-card">
-          <h3>Win Rate</h3>
-          <p>0%</p>
-        </div>
-        <div class="stat-card">
-          <h3>Net Profit / Loss</h3>
-          <p>$0.00</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const SUPABASE_URL = 'https://pnknjoeaacyttttgpabv.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBua25qb2VhYWN5dHR0dGdwYWJ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwNTA1OTQsImV4cCI6MjEwMDYyNjU5NH0.1o4idKmzH-FV0rY9udl3WKDu8B94ILkjtLiX-p7zk7A';
-    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    const loadingDiv = document.getElementById('loading');
-    const contentDiv = document.getElementById('dashboard-content');
-    const userEmailDisplay = document.getElementById('user-email-display');
-    const logoutBtn = document.getElementById('logout-btn');
-
-    // Check if user is logged in on page load
-    async function checkAuth() {
-      const { data: { session }, error } = await _supabase.auth.getSession();
-
-      if (error || !session) {
-        // If not logged in, kick them back to login page
-        window.location.href = 'login.html';
-      } else {
-        // Show dashboard and display user email
-        loadingDiv.style.display = 'none';
-        contentDiv.style.display = 'block';
-        userEmailDisplay.textContent = `Logged in as: ${session.user.email}`;
-      }
-    }
-
-    // Handle logout
-    logoutBtn.addEventListener('click', async () => {
-      await _supabase.auth.signOut();
-      window.location.href = 'login.html';
-    });
-
-    checkAuth();
-  </script>
-
-<!-- AxivoraX AI Assistant -->
-<div class="ai-chat-box">
-    <h3>AxivoraX AI Assistant</h3>
-
-    <textarea 
-        id="ai-message"
-        placeholder="Ask AxivoraX..."
-    ></textarea>
-
-    <button onclick="sendAIMessage()">
-        Send
-    </button>
-
-    <pre id="ai-response">
-    </pre>
-</div>
-
-<script src="components/ai-chat.js"></script>
-\n
-<!-- AX-01 Floating AI -->
-
-
-
-            
-        </div>
+  
 
         
     </div>
@@ -135,55 +46,7 @@
     <span class="ax01-float-label">AX-01</span>
 </button>
 
-<section
-    id="ax01-popup"
-    class="ax01-popup"
-    role="dialog"
-    aria-modal="false"
-    aria-label="AX-01 AI Assistant"
-    aria-hidden="true">
 
-    <header class="ax01-popup-header">
-        <div>
-            <strong>AX-01</strong>
-            <span id="ax01-status">● ONLINE</span>
-        </div>
-
-        <button
-            id="ax01-close"
-            type="button"
-            aria-label="Close AX-01">
-            ×
-        </button>
-    </header>
-
-    <div
-        id="ax01-messages"
-        class="ax01-messages"
-        aria-live="polite">
-    </div>
-
-    <div class="ax01-popup-actions">
-        <button id="ax01-clear" type="button">
-            Clear
-        </button>
-    </div>
-
-    <form id="ax01-form" class="ax01-compose">
-        <textarea
-            id="ax01-input"
-            rows="2"
-            maxlength="4000"
-            placeholder="Ask AX-01..."
-            aria-label="Message AX-01"></textarea>
-
-        <button
-            id="ax01-send"
-            type="submit">
-            Send
-        </button>
-    </form>
-</section>
 
 </body>
 </html>

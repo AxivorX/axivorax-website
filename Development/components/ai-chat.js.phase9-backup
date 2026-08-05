@@ -1,5 +1,4 @@
 const AX01_ENDPOINT = "/demo/analyze";
-const AX01_REQUEST_TIMEOUT = 15000;
 const AX01_TIMEOUT_MS = 30000;
 
 const AX01 = {

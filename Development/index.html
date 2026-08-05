@@ -550,64 +550,20 @@ risk awareness and better trading processes.
     </pre>
 </div>
 
+
+
+
+<script src="components/ai-chat.js" defer></script>
+
 <script>
-function toggleAX01(){
-    document.getElementById("ax01-chat")
-    .classList.toggle("active");
+function toggleAX01() {
+    const chat = document.getElementById("ax01-chat");
+
+    if (chat) {
+        chat.classList.toggle("active");
+    }
 }
 </script>
 
 </body>
 </html>
-
-
-<!-- AX-01 Live Demo -->
-<section class="ax01-live-demo">
-<h2>Ask AX-01 AI Agent</h2>
-
-<button id="ax01DemoBtn">
-Ask AX-01
-</button>
-
-<pre id="ax01Response">
-AX-01 ready...
-</pre>
-
-<script>
-document.getElementById("ax01DemoBtn").onclick = async function(){
-
-document.getElementById("ax01Response").innerText =
-"AX-01 analyzing...";
-
-try {
-
-let response = await fetch(
-"/demo/analyze",
-{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-message:"Analyze AxivoraX landing page"
-})
-});
-
-let data = await response.json();
-
-document.getElementById("ax01Response").innerText =
-data.data.result;
-
-}
-catch(error){
-
-document.getElementById("ax01Response").innerText =
-"AX-01 connection error: " + error;
-
-}
-
-}
-</script>
-
-</section>
-

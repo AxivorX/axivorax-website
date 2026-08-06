@@ -1,0 +1,17 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/_global-error/page": "/_global-error",
+  "/api/auth/fyers/route": "/api/auth/fyers",
+  "/analytics/page": "/analytics",
+  "/auth/forgot-password/page": "/auth/forgot-password",
+  "/dasboard/page": "/dasboard",
+  "/dashboard/dashboard/page": "/dashboard/dashboard",
+  "/dashboard/page": "/dashboard",
+  "/insights/page": "/insights",
+  "/journal/page": "/journal",
+  "/layout/page": "/layout",
+  "/login/page": "/login",
+  "/page": "/",
+  "/settings/page": "/settings",
+  "/signup/page": "/signup"
+}

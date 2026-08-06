@@ -1,0 +1,24 @@
+Branch:
+development
+
+Remote:
+origin	https://github.com/AxivorX/axivorax-website.git (fetch)
+origin	https://github.com/AxivorX/axivorax-website.git (push)
+
+Status:
+?? Development/AXIVORAX_DEVELOPMENT_AUDIT_REPORT.md
+?? Development/AxivoraX/
+?? Development/HookNYarn/
+?? Development/_ax01_cleanup_backup/
+?? Development/backups/
+?? Development/dashboard.html.before-temp-login
+?? Development/index.html.alignment-recovery-20260806-155233.bak
+?? Development/style.css.alignment-recovery-20260806-155233.bak
+?? Development/style.css.backup-20260805-192350
+?? Development/style.css.before-brace-fix-20260806-160619.bak
+?? Development/style.css.before-brace-fix-20260806-160653.bak
+?? axivorax_final/
+?? axivorax_python/
+?? scripts/
+?? span
+?? "tatus --short"

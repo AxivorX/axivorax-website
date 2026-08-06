@@ -1,0 +1,6 @@
+
+# Next.js generated files
+.next/
+out/
+dist/
+build/
